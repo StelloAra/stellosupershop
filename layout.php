@@ -11,8 +11,9 @@ require_once('classes/database.php');
 
 $dbContext = new Database();
 $auth = $dbContext->getUserDatabase()->getAuth();
-$userId = $auth->getUserId();
-$name = $userDetails->name ?? 'Användare';
+
+$name = 'Användare';
+$userId = null;
 // if ($userDetails) {
 //     $name = $userDetails->name ?? 'Användare';
 // } else {
@@ -22,14 +23,14 @@ $name = $userDetails->name ?? 'Användare';
 
 if ($auth->isLoggedIn()) {
     $userId = $auth->getUserId();
-    $user = $dbContext->getUserDetailsById($userId);
+    $userDetails = $dbContext->getUserDetailsById($userId);
 
-    // if ($user && isset($user->name)) {
-    //     $name = $user->name;
-    // } else {
-    //     $name = 'Användare';
-    // }
-    echo 'inloggad som: ' . $user->name . '<br>';
+    if ($userDetails && isset($userDetails->name)) {
+        $name = $userDetails->name;
+    } else {
+        $name = 'Användare';
+    }
+    echo 'inloggad som: ' . $userDetails->name . '<br>';
     echo 'Useer ID: ' . $userId . '<br>';
     echo 'User object: ';
 } else {
@@ -81,7 +82,7 @@ if ($auth->isLoggedIn()) {
                             <a class="nav-link text-dark" href="/Account/Manage" title="Manage">Hello <?php echo htmlspecialchars($name ?? 'Användare'); ?>!</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Account/Logout" title="Manage">Logout</a>
+                            <a class="nav-link text-dark" href="AccountLogout" title="Manage">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/AccountRegister.php">Register</a>
@@ -104,7 +105,7 @@ if ($auth->isLoggedIn()) {
                     <!-- LOGO -->
                     <div class="col-md-3">
                         <div class="header-logo">
-                            <a href="index.php" class="logo">
+                            <a href=" /" class="logo">
                                 <img src="/img/logo.png" alt="">
                             </a>
                         </div>
