@@ -12,12 +12,12 @@ require_once('classes/database.php');
 $dbContext = new Database();
 $auth = $dbContext->getUserDatabase()->getAuth();
 $userId = $auth->getUserId();
-//$name = $userDetails->name ?? 'Användare';
-if ($userDetails) {
-    $name = $userDetails->name ?? 'Användare';
-} else {
-    $name = 'Användare'; // fallback
-}
+$name = $userDetails->name ?? 'Användare';
+// if ($userDetails) {
+//     $name = $userDetails->name ?? 'Användare';
+// } else {
+//     $name = 'Användare'; // fallback
+// }
 
 
 if ($auth->isLoggedIn()) {

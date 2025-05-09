@@ -33,7 +33,7 @@ class Database
 
     function initDatabase()
     {
-        $this->pdo->query('CREATE TABLE IF NOT EXISTS UserDetails (
+        $this->pdo->query('CREATE TABLE IF NOT EXISTS userdetails (
                 id INT PRIMARY KEY,
                 name VARCHAR(50),
                 street VARCHAR(50),
@@ -44,7 +44,7 @@ class Database
 
     function addUserDetails($id, $name, $street, $postalCode, $city)
     {
-        $query = $this->pdo->prepare("INSERT INTO UserDetails (id, name, street,  postalCode, city) VALUES (:id, :name, :street, :postalCode, :city)");
+        $query = $this->pdo->prepare("INSERT INTO userdetails (id, name, street,  postalCode, city) VALUES (:id, :name, :street, :postalCode, :city)");
         $query->execute([
             "id" => $id,
             "name" => $name,
@@ -56,7 +56,7 @@ class Database
 
     public function getUserDetailsById($id)
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM UsersDetails WHERE id = :id');
+        $stmt = $this->pdo->prepare('SELECT * FROM userdetails WHERE id = :id');
         $stmt->execute(['id' => $id]);
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
