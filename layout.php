@@ -11,20 +11,31 @@ require_once('classes/database.php');
 
 $dbContext = new Database();
 $auth = $dbContext->getUserDatabase()->getAuth();
-$name = 'Gäst';
-if ($auth && $auth->isLoggedIn()) {
+$userId = $auth->getUserId();
+//$name = $userDetails->name ?? 'Användare';
+if ($userDetails) {
+    $name = $userDetails->name ?? 'Användare';
+} else {
+    $name = 'Användare'; // fallback
+}
+
+
+if ($auth->isLoggedIn()) {
     $userId = $auth->getUserId();
-    $user = $dbContext->getUserById($userId);
-    $name = $user->name ?? 'Användare';
+    $user = $dbContext->getUserDetailsById($userId);
+
+    // if ($user && isset($user->name)) {
+    //     $name = $user->name;
+    // } else {
+    //     $name = 'Användare';
+    // }
+    echo 'inloggad som: ' . $user->name . '<br>';
+    echo 'Useer ID: ' . $userId . '<br>';
+    echo 'User object: ';
+} else {
+    echo 'Användare är inte inloggad';
 }
 ?>
-
-<?php if (!empty($_SESSION['status_message'])): ?>
-    <span style="display:block; padding:10px; background-color:#d1e7dd; color:#0f5132; border:1px solid #badbcc; margin:10px 0; border-radius:5px;">
-        <?php echo $_SESSION['status_message']; ?>
-    </span>
-    <?php unset($_SESSION['status_message']); ?>
-<?php endif; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +78,7 @@ if ($auth && $auth->isLoggedIn()) {
                 <ul class="header-links pull-right">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Account/Manage" title="Manage">Hello <?php echo htmlspecialchars($name); ?>!</a>
+                            <a class="nav-link text-dark" href="/Account/Manage" title="Manage">Hello <?php echo htmlspecialchars($name ?? 'Användare'); ?>!</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Account/Logout" title="Manage">Logout</a>

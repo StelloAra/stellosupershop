@@ -33,13 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if ($auth->login($email, $password)) {
+    try {
+        $auth->login($email, $password);
         header("Location: index.php");
         exit;
-    } else {
-        $message = "Felaktig e-postadress eler lösenord.";
+    } catch (\Delight\Auth\InvalidEmailException $e) {
+        $message = 'Fel e-postadress';
+    } catch (\Delight\Auth\InvalidPasswordException $e) {
+        $message = 'Fel lösenord';
+    } catch (\Delight\Auth\EmailNotVerifiedException $e) {
+        $message = 'E-postadressen är inte verifierad';
+    } catch (\Delight\Auth\TooManyRequestsException $e) {
+        $message = 'För många försök. Försök igen senare.';
     }
 }
+
 
 ?>
 <div class="col-md-12">
